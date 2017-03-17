@@ -1,0 +1,15 @@
+body {
+    background-image: url("img/mars.jpg");
+}
+
+#grid {
+    border: 0px;
+    background-color: transparent;
+    position: fixed;
+    margin-top: -20px;
+    margin-left: 500px;
+    height: 250px;
+    width: 250px;
+    font-weight: bold;
+    font-size: 20px;
+}
