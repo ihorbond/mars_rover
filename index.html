@@ -1,17 +1,19 @@
 <html>
+
 <head>
 	<title>Mars Rover Shell</title>
 	<link rel="stylesheet" href="rover.css">
-  <script type="text/javascript" src="rover.js" defer></script>
+	<script type="text/javascript" src="rover.js" defer></script>
 </head>
+
 <body>
 	<pre>
 Welcome to Mars Rovers remote control console.
 Commands:
 'F' to move rover forward
 'B' to move rover in reverse
-'L' to rotate rover left
-'R' to rotate rover right
+'L' to rotate rover left (counter clockwise)
+'R' to rotate rover right (clockwise)
 'R' and 'L' commands rotate the rover into a desired direction (N, W, E, S).
 Multiple commands accepted up to 20.
 Labels:
@@ -21,15 +23,15 @@ $ - rover Napoleon
 # - obstacle
 The following 10x10 mini-map shows rovers' current location:
 <textarea id="grid"></textarea>
+Kata's current direction: <span id="kata-direction"></span>
+Napoleon's current direction: <span id="napoleon-direction"></span>
 </pre>
-
-<div id="controls">
-<input type="text" name="kata-command" maxlength="20" placeholder="Enter command" id="kata-command"/>
-<input type="button" name="Submit" value="Move Kata" id="button-kata"/><br>
-<input type="text" name="napoleon" placeholder="Enter command" id="napoleon-command"/>
-<input type="button" name="Submit" value="Move Napoleon" id="button-napoleon"/>
-</div>
-
-
+	<div id="controls">
+		<input type="text" name="kata-command" maxlength="20" placeholder="Enter command" id="kata-command" />
+		<input type="button" name="Submit" value="Move Kata" id="button-kata" /><br>
+		<input type="text" name="napoleon" placeholder="Enter command" id="napoleon-command" />
+		<input type="button" name="Submit" value="Move Napoleon" id="button-napoleon" />
+	</div>
 </body>
+
 </html>

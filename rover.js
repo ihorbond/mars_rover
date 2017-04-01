@@ -1,4 +1,4 @@
-var whichRover; // checker which rover's button was pressed
+var whichRover; // checker which rover's submit button was pressed
 var roverPos; // current rover's anticipated position
 //Kata object
 var roverKata = {
@@ -25,9 +25,10 @@ for (i = 0; i < gridMatrix.length; i++) {
 }
 gridMatrix[0][0] = roverKata.label;
 gridMatrix[9][9] = roverNapoleon.label;
-// gridMatrix[0][0] = "#";
 obstacleBuilder();
 document.getElementById('grid').value = gridMatrix;
+document.getElementById("kata-direction").innerText = roverKata.direction;
+document.getElementById("napoleon-direction").innerText = roverNapoleon.direction;
 
 //placing 5 random obstacles for our rovers
 function obstacleBuilder() {
@@ -58,7 +59,6 @@ function kataInputCheck() {
         kataMove(commands.value.toUpperCase());
     } else {
         alert("No commands were entered!");
-        //kataCommand.focus();
     }
 }
 
@@ -70,43 +70,14 @@ function napoleonInputCheck() {
         napoleonMove(commands.value.toUpperCase());
     } else {
         alert("No commands were entered");
-        //napoleonCommand.focus();
     }
 }
 
-//processing user command depending on rover's direction
-function commandProcessor(currentCommand) {
-    console.log("commandProcessor: " + roverKata.direction);
-    switch (roverKata.direction) {
-        case 'N':
-            if (currentCommand == 'F') {
-                currentCommand = 'B';
-            } else if (currentCommand == 'B') {
-                currentCommand = 'F';
-            }
-            break;
-        case 'W':
-            if (currentCommand == 'F') {
-                currentCommand = 'L';
-            } else if (currentCommand == 'B') {
-                currentCommand = 'R';
-            }
-            break;
-        case 'E':
-            if (currentCommand == 'F') {
-                currentCommand = 'R';
-            } else if (currentCommand == 'B') {
-                currentCommand = 'L';
-            }
-            break;
-    }
 
-    return currentCommand;
-}
 //updating rover's direction
 function updateDirection(currentCommand) {
     directionArray = ['N', 'E', 'S', 'W'];
-    console.log("updateDirection: " + roverKata.direction);
+    console.log("updateDirectionInput: " + roverKata.direction);
 
     switch (currentCommand) {
         case 'R':
@@ -134,9 +105,12 @@ function updateDirection(currentCommand) {
                     break;
                 }
             }
-            //console.log("updateDirectionCaseL: " + roverKata.direction);
             break;
+        default:
+            console.log("no direction change was made at this step");
     }
+    console.log("updateDirectionOutput: " + roverKata.direction);
+    document.getElementById("kata-direction").innerText = roverKata.direction;
 }
 
 
@@ -185,15 +159,21 @@ function kataMove(commands) {
     var kataStartPos = JSON.parse(JSON.stringify(roverKata.position));
     var mostRecentPos = JSON.parse(JSON.stringify(roverKata.position));
     var len = commands.length;
-    var direction = roverKata.direction;
     for (i = 0; i < len; i++) {
         var currentCommand = commands[i];
-        updateDirection(currentCommand);
-        switch (commandProcessor(currentCommand)) {
+        switch (roverKata.direction) {
 
-            case 'F':
-                mostRecentPos[0] = roverKata.position[0];
-                roverKata.position[0]++;
+            case 'N':
+                if (currentCommand == 'F') {
+                    mostRecentPos[0] = roverKata.position[0];
+                    roverKata.position[0]--;
+                } else if (currentCommand == 'B') {
+                    mostRecentPos[0] = roverKata.position[0];
+                    roverKata.position[0]++;
+                } else if (currentCommand == 'R' || currentCommand == 'L') {
+                    updateDirection(currentCommand);
+                    continue;
+                }
                 isEdge();
                 if (isObstacle()) {
                     roverKata.position[0] = mostRecentPos[0];
@@ -203,22 +183,37 @@ function kataMove(commands) {
                 }
                 break;
 
-              /*    case 'R':
-                      mostRecentPos[1] = roverKata.position[1];
-                      roverKata.position[1]++;
-                      isEdge();
-                      if (isObstacle()) {
-                          roverKata.position[1] = mostRecentPos[1];
-                          break;
-                      } else {
-                          continue;
-                      }
-                      break;   */
+            case 'E':
+                if (currentCommand == 'F') {
+                    mostRecentPos[1] = roverKata.position[1];
+                    roverKata.position[1]++;
+                } else if (currentCommand == 'B') {
+                    mostRecentPos[1] = roverKata.position[1];
+                    roverKata.position[1]--;
+                } else if (currentCommand == 'R' || currentCommand == 'L') {
+                    updateDirection(currentCommand);
+                    continue;
+                }
+                isEdge();
+                if (isObstacle()) {
+                    roverKata.position[1] = mostRecentPos[1];
+                    break;
+                } else {
+                    continue;
+                }
+                break;
 
-
-            case 'B':
-                mostRecentPos[0] = roverKata.position[0];
-                roverKata.position[0]--;
+            case 'S':
+                if (currentCommand == 'F') {
+                    mostRecentPos[0] = roverKata.position[0];
+                    roverKata.position[0]++;
+                } else if (currentCommand == 'B') {
+                    mostRecentPos[0] = roverKata.position[0];
+                    roverKata.position[0]--;
+                } else if (currentCommand == 'R' || currentCommand == 'L') {
+                    updateDirection(currentCommand);
+                    continue;
+                }
                 isEdge();
                 if (isObstacle()) {
                     roverKata.position[0] = mostRecentPos[0];
@@ -228,20 +223,29 @@ function kataMove(commands) {
                 }
                 break;
 
-            /*     case 'L':
-                      mostRecentPos[1] = roverKata.position[1];
-                      roverKata.position[1]--;
-                      isEdge();
-                      if (isObstacle()) {
-                          roverKata.position[1] = mostRecentPos[1];
-                          break;
-                      } else {
-                          continue;
-                      }
-                      break;    */
+            case 'W':
+                if (currentCommand == 'F') {
+                    mostRecentPos[1] = roverKata.position[1];
+                    roverKata.position[1]--;
+                } else if (currentCommand == 'B') {
+                    mostRecentPos[1] = roverKata.position[1];
+                    roverKata.position[1]++;
+                } else if (currentCommand == 'R' || currentCommand == 'L') {
+                    updateDirection(currentCommand);
+                    continue;
+                }
+                isEdge();
+                if (isObstacle()) {
+                    roverKata.position[1] = mostRecentPos[1];
+                    break;
+                } else {
+                    continue;
+                }
+                break;
+
 
             default:
-                console.log(commands[i] + " - command not recognized");
+                console.log(currentCommand + " - command not recognized");
                 continue;
         }
     }
