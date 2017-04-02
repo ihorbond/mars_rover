@@ -13,3 +13,8 @@ body {
     font-weight: bold;
     font-size: 20px;
 }
+
+#username {
+    font-weight: bold;
+    font-style: italic;
+}
